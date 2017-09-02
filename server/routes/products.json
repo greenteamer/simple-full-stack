@@ -1,0 +1,30 @@
+[
+  {
+    "title": "first product",
+    "price": 1200
+  },
+  {
+    "title": "second product",
+    "price": 999
+  },
+  {
+    "title": "third product",
+    "price": 800
+  },
+  {
+    "title": "fourth product",
+    "price": 10500
+  },
+  {
+    "title": "fifth product",
+    "price": 415
+  },
+  {
+    "title": "sixth product",
+    "price": 3020
+  },
+  {
+    "title": "seventh product",
+    "price": 2150
+  }
+]
