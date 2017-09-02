@@ -1,0 +1,6 @@
+# IDE:
+*.swp
+*.swo
+
+# project:
+node_modules/
