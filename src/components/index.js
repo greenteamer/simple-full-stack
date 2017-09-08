@@ -1,3 +1,6 @@
-import ProductComponent from './ProductComponent'
+import ProductItem from './ProductItem'
+import ProductDescription from './ProductDescription'
+import ProductForm from './ProductForm'
+import Image from './Image'
 
-export { ProductComponent }
+export { ProductItem, ProductDescription, Image, ProductForm }

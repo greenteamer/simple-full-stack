@@ -17,8 +17,8 @@ export async function request(endpoint, data = undefined) {
   return responseData
 }
 
-export const GET_PRODUCTS = () => ({ url: 'api/products/', method: 'GET' })
-export const GET_PRODUCT = id => ({ url: `api/products/${id}/`, method: 'GET' })
-export const DELETE_PRODUCT = id => ({ url: `api/products/${id}/`, method: 'DELETE' })
-export const POST_PRODUCT = () => ({ url: 'api/products/', method: 'POST' })
-export const PUT_PRODUCT = id => ({ url: `api/products/${id}/`, method: 'PUT' })
+export const GET_PRODUCTS = () => ({ url: 'api/product/', method: 'GET' })
+export const GET_PRODUCT = id => ({ url: `api/product/${id}/`, method: 'GET' })
+export const DELETE_PRODUCT = id => ({ url: `api/product/${id}/`, method: 'DELETE' })
+export const POST_PRODUCT = () => ({ url: 'api/product/', method: 'POST' })
+export const PUT_PRODUCT = id => ({ url: `api/product/${id}/`, method: 'PUT' })

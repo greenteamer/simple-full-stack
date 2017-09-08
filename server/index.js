@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const initialData = require('./data')
 const api = require('./api')
 
 const assetUrl = 'http://localhost:8000'
@@ -8,7 +9,7 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use('/static', express.static('dist'))
-app.use('/api', api)
+app.use('/api', api(initialData))
 app.use('/', (req, res) => {
   return res.end(renderHTML())
 })
