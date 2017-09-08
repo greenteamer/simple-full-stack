@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import { connect } from 'react-redux'
-import { fetchProducts } from '../actions'
-import { ProductComponent } from '../components'
+import { fetchProductsIfNeeded } from '../actions'
+import { ProductItem } from '../components'
 // import * as types from '../actionTypes'
 
 class ProductsList extends React.Component {
@@ -14,17 +14,16 @@ class ProductsList extends React.Component {
   }
   componentDidMount() {
     const { dispatch } = this.props
-    dispatch(fetchProducts())
+    dispatch(fetchProductsIfNeeded())
   }
   render() {
     const { products, isFetching } = this.props
     if (isFetching) return <div>fetching</div>
-    // return <div>Ok done</div>
     return (
       <div className="container">
         <h1 className="text-center">Hello Kaspersky</h1>
         <div className="row justify-center">
-          {products && products.map((product, index) => <ProductComponent key={index} product={product} />)}
+          {products && products.map((product, index) => <ProductItem key={index} product={product} />)}
         </div>
       </div>
     )

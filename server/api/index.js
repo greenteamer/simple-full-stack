@@ -1,37 +1,41 @@
 const express = require('express')
-const router = express.Router()
+const formidable = require('formidable')
 const fs = require('fs')
 const path = require('path')
+const router = express.Router()
 
-const fileName = 'products.json'
-
-router.use(function timeLog(req, res, next) {
-  console.log('Time: ', Date.now())
-  next()
-})
-router.get('/', function(req, res) {
-  res.send('Birds home page')
-})
-router.get('/products', function(req, res) {
-  fs.readFile(path.resolve(__dirname, fileName), 'utf8', function(err, json) {
-    if (!err) {
-      const products = JSON.parse(json)
-      res.send(products)
-    } else console.log(err)
+const createRouter = initialData => {
+  router.get('/', function(req, res) {
+    res.send('Birds home page')
   })
-})
-router.get('/products/:productId', function(req, res) {
-  fs.readFile(path.resolve(__dirname, fileName), 'utf8', function(err, json) {
-    if (!err) {
-      const products = JSON.parse(json)
-      const product = products.find(p => p.id === +req.params.productId)
-      res.send(product)
-    } else console.log(err)
+  router.get('/product', function(req, res) {
+    res.send(initialData)
   })
-})
-router.post('/products', function(req, res) {
-  console.log('params: ', req.body)
-  res.send('post products')
-})
+  router.get('/product/:productId', function(req, res) {
+    const product = initialData.find(p => p.id === +req.params.productId)
+    res.send(product)
+  })
+  router.post('/product/:productId', function(req, res) {
+    initialData.forEach(function(product, index) {
+      if (product.id === +req.params.productId) {
+        initialData[index] = req.body
+      }
+    })
+    res.send(req.body)
+  })
+  router.post('/upload', function(req, res) {
+    const form = new formidable.IncomingForm()
+    form.parse(req, function(err, fields, files) {
+      const oldpath = files.file.path
+      const newpath = path.join(__dirname, '../../dist', files.file.name)
+      fs.rename(oldpath, newpath, function(err) {
+        files.file.path = 'http://localhost:8000/static/' + files.file.name
+        res.send(files)
+        if (err) throw err
+      })
+    })
+  })
+  return router
+}
 
-module.exports = router
+module.exports = createRouter
