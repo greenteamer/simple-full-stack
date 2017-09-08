@@ -6,6 +6,7 @@ export const RESEIVE_PRODUCTS = 'RESEIVE_PRODUCTS'
 export const REQUEST_PRODUCT = 'REQUEST_PRODUCT'
 export const RESEIVE_PRODUCT = 'RESEIVE_PRODUCT'
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT'
+export const RECEIVE_IMAGE = 'RECEIVE_IMAGE'
 
 export const startFetching = () => ({
   type: START_FETCHING
@@ -21,6 +22,11 @@ export const receiveProduct = data => ({
   product: data
 })
 
+export const receiveImage = file => ({
+  type: RECEIVE_IMAGE,
+  file
+})
+
 export const updateProduct = product => ({
   type: UPDATE_PRODUCT,
   product
@@ -32,14 +38,6 @@ const shouldFetchProducts = () => (dispatch, getState) => {
   if (state.isFetching) return false
   return false
 }
-
-// export const fetchProducts = () => async dispatch => {
-//   if (dispatch(shouldFetchProducts())) {
-//     dispatch(startFetching())
-//     const response = await API.request(API.GET_PRODUCTS())
-//     return dispatch(receiveProducts(response))
-//   }
-// }
 
 export const fetchProductsIfNeeded = () => async dispatch => {
   if (dispatch(shouldFetchProducts())) {
@@ -58,4 +56,11 @@ export const fetchProduct = id => async (dispatch, getState) => {
     const response = await API.request(API.GET_PRODUCT(id))
     return dispatch(receiveProduct(response))
   }
+}
+
+export const saveProductAndUpdateState = data => async dispatch => {
+  dispatch(startFetching())
+  const response = await API.request(API.POST_PRODUCT(data.id), data)
+  console.log('save and update: ', response)
+  return dispatch(updateProduct(data))
 }

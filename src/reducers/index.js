@@ -3,8 +3,7 @@ import { START_FETCHING, RESEIVE_PRODUCTS, RESEIVE_PRODUCT, UPDATE_PRODUCT } fro
 
 const initialState = {
   isFetching: false,
-  products: [],
-  currentProduct: null
+  products: []
 }
 
 const productsApp = (state = initialState, action) => {
@@ -17,7 +16,7 @@ const productsApp = (state = initialState, action) => {
       return { ...state, isFetching: false, products: [...state.products, action.product] }
     case UPDATE_PRODUCT:
       const newArr = [...state.products.filter(p => p.id !== action.product.id), action.product]
-      return { ...state, products: newArr }
+      return { ...state, isFetching: false, products: newArr }
     default:
       return state
   }

@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 // import _ from 'lodash'
+import * as API from '../api'
 import { connect } from 'react-redux'
-import { fetchProductsIfNeeded, updateProduct } from '../actions'
+import { fetchProductsIfNeeded, saveProductAndUpdateState } from '../actions'
 import { ProductDescription, ProductForm } from '../components'
 // import * as types from '../actionTypes'
 
@@ -38,7 +39,7 @@ class ProductDetails extends React.Component {
   }
   handleOnChangeTextfield = ({ name, value }) => {
     const newObj = Object.assign({}, this.state.product, {
-      [name]: value
+      [name]: name === 'price' ? +value : value
     })
     this.setState({ product: newObj })
   }
@@ -47,12 +48,16 @@ class ProductDetails extends React.Component {
   }
   handleUpdateProduct = () => {
     const { dispatch } = this.props
-    dispatch(updateProduct(this.state.product))
+    dispatch(saveProductAndUpdateState(this.state.product))
+  }
+  handleUploadImage = async file => {
+    const response = await API.uploadFile(file)
+    this.setState({ product: { ...this.state.product, image: response.file.path } })
   }
   render() {
     const { isFetching } = this.props
     const { isEditing, product } = this.state
-    console.log('state product : ', product)
+    console.log('product : ', product)
     if (isFetching || !product) return <div>Product detail fetching</div>
     return (
       <div className="container">
@@ -71,6 +76,7 @@ class ProductDetails extends React.Component {
             product={product}
             updateProductHandler={this.handleUpdateProduct}
             onChangeTextfieldHandler={this.handleOnChangeTextfield}
+            onUploadImageHandler={this.handleUploadImage}
           />
         )}
       </div>

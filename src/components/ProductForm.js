@@ -5,18 +5,37 @@ import PropTypes from 'prop-types'
 class ProductComponent extends React.Component {
   static propTypes = {
     product: PropTypes.object.isRequired,
-    onChangeTextfieldHandler: PropTypes.func.isRequired
+    onChangeTextfieldHandler: PropTypes.func.isRequired,
+    onUploadImageHandler: PropTypes.func.isRequired
   }
+  state = { file: '', imagePreviewUrl: '' }
   handleOnChangeTextfield = e => {
     const { onChangeTextfieldHandler } = this.props
     onChangeTextfieldHandler({ name: e.target.name, value: e.target.value })
   }
+  handleImageChange = e => {
+    const { onUploadImageHandler } = this.props
+    console.log(`handleImageChange event: ${e}`)
+    e.preventDefault()
+    const reader = new FileReader()
+    const file = e.target.files[0]
+    onUploadImageHandler(file)
+    reader.onloadend = () => {
+      this.setState({
+        file: file,
+        imagePreviewUrl: reader.result
+      })
+    }
+    reader.readAsDataURL(file)
+  }
   render() {
     const { product: { image, title, description, price } } = this.props
+    const { imagePreviewUrl } = this.state
     return (
       <div className="row">
         <div className="col-md-4">
-          <img className="card-img-top" src={image} alt="" />
+          <img className="mb3" src={imagePreviewUrl || image} alt="" />
+          <input className="fileInput" type="file" onChange={e => this.handleImageChange(e)} />
         </div>
         <div className="col-md-7">
           <div className="card">
